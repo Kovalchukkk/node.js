@@ -1,23 +1,39 @@
-const crypto = require("crypto");
+const PORT = process.env.PORT || 5000;
+const Application = require("./framework/application");
+const userRouter = require("./src/user-router");
+const jsonParser = require("./framework/parse-json");
+const urlParser = require("./framework/parse-url");
 
-const start = Date.now();
+const app = new Application();
 
-crypto.pbkdf2("123ttt", "5", 1000000, 64, "sha512", () => {
-  console.log("1 end", Date.now() - start);
-});
+app.use(jsonParser);
+app.use(urlParser("http://localhost:5000"));
 
-crypto.pbkdf2("123ttt", "5", 1000000, 64, "sha512", () => {
-  console.log("2 end", Date.now() - start);
-});
+app.addRouter(userRouter);
 
-crypto.pbkdf2("123ttt", "5", 1000000, 64, "sha512", () => {
-  console.log("3 end", Date.now() - start);
-});
+app.listen(PORT, () => console.log(`Server started on PORT ${PORT}`));
 
-crypto.pbkdf2("123ttt", "5", 1000000, 64, "sha512", () => {
-  console.log("4 end", Date.now() - start);
-});
+// const server = http.createServer((req, res) => {
+//   const isEmitted = emitter.emit(`[${req.url}]:[${req.method}]`, req, res);
+//   if (!isEmitted) {
+//     res.end();
+//   }
+//   res.writeHead(200, {
+//     "Content-Type": "application/json",
+//   });
+//   if (req.url === "/users") {
+//     return res.end(
+//       JSON.stringify([
+//         {
+//           id: 1,
+//           name: "John",
+//         },
+//       ])
+//     );
+//   }
+//   if (req.url === "/posts") {
+//     return res.end("POSTS");
+//   }
+// });
 
-crypto.pbkdf2("123ttt", "5", 1000000, 64, "sha512", () => {
-  console.log("5 end", Date.now() - start);
-});
+// server.listen(PORT, () => console.log(`Server started on PORT ${PORT}`));
