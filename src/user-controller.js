@@ -1,19 +1,20 @@
-const users = [
-  { id: 1, name: "Mykola" },
-  { id: 2, name: "Oleg" },
-];
+const User = require("./user-model");
 
-const getUsers = (req, res) => {
+const getUsers = async (req, res) => {
+  let users;
   if (req.params.id) {
-    return res.send(users.find((user) => user.id === Number(req.params.id)));
+    // console.log(req.params.id);
+    users = await User.findById(req.params.id);
+    res.send(users);
+    return;
   }
+  users = await User.find();
   res.send(users);
 };
 
-const createUser = (req, res) => {
+const createUser = async (req, res) => {
   // console.log(`Request body user ${req.body.name}`);
-  const user = req.body;
-  users.push(user);
+  const user = await User.create(req.body);
   res.send(user);
 };
 
